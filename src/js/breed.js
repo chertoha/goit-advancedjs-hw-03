@@ -1,7 +1,8 @@
-// import SlimSelect from 'slim-select';
+import SlimSelect from 'slim-select';
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
 import { createInfoData } from './info';
-// import { TomSelect } from 'tom-select';
+
+const PLACEHOLDER_VALUE = 'Choose breed';
 
 const select = document.querySelector('.breed-select');
 const info = document.querySelector('.cat-info');
@@ -31,6 +32,8 @@ fetchBreeds()
 select.addEventListener('change', e => {
   const breedId = e.target.value;
 
+  if (breedId === PLACEHOLDER_VALUE) return;
+
   loading(true);
   showInfo(false);
   showError(false);
@@ -55,6 +58,10 @@ function populateSelect(breeds) {
   //   .map(({ id, name }) => `<option value="${id}">${name}</option>`)
   //   .join('');
   // select.insertAdjacentHTML('afterbegin', disabledOption + optionsMarkup);
+
+  const data = breeds.map(({ id, name }) => ({ text: name, value: id }));
+
+  slimSelect.setData([{ placeholder: true, text: PLACEHOLDER_VALUE }, ...data]);
 }
 
 function populateInfo(data) {
