@@ -16,3 +16,10 @@
 .cat-info p {
   margin-bottom: 20px;
 }
+
+.cat-info.hidden,
+.error.hidden,
+.loader.hidden,
+.breed-select.hidden {
+  display: none;
+}
