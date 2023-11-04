@@ -1,13 +1,14 @@
 import SlimSelect from 'slim-select';
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
 import { createInfoData } from './info';
+import { toastError } from './toast';
 
 const PLACEHOLDER_VALUE = 'Choose breed';
 
 const select = document.querySelector('.breed-select');
 const info = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader');
-const error = document.querySelector('.error');
+// const error = document.querySelector('.error');
 
 const slimSelect = new SlimSelect({
   select: select,
@@ -15,7 +16,7 @@ const slimSelect = new SlimSelect({
 
 loading(true);
 showSelect(false);
-showError(false);
+// showError(false);
 
 fetchBreeds()
   .then(breeds => {
@@ -23,7 +24,8 @@ fetchBreeds()
     showSelect(true);
   })
   .catch(() => {
-    showError(true);
+    // showError(true);
+    toastError();
   })
   .finally(() => {
     loading(false);
@@ -36,7 +38,7 @@ select.addEventListener('change', e => {
 
   loading(true);
   showInfo(false);
-  showError(false);
+  // showError(false);
 
   fetchCatByBreed(breedId)
     .then(data => {
@@ -44,7 +46,8 @@ select.addEventListener('change', e => {
       showInfo(true);
     })
     .catch(() => {
-      showError(true);
+      // showError(true);
+      toastError();
     })
     .finally(() => {
       loading(false);
@@ -53,14 +56,7 @@ select.addEventListener('change', e => {
 
 // ----------------------- Helpers
 function populateSelect(breeds) {
-  // const disabledOption = `<option value="" selected disabled hidden>-- Choose breed --</option>`;
-  // const optionsMarkup = breeds
-  //   .map(({ id, name }) => `<option value="${id}">${name}</option>`)
-  //   .join('');
-  // select.insertAdjacentHTML('afterbegin', disabledOption + optionsMarkup);
-
   const data = breeds.map(({ id, name }) => ({ text: name, value: id }));
-
   slimSelect.setData([{ placeholder: true, text: PLACEHOLDER_VALUE }, ...data]);
 }
 
@@ -84,9 +80,11 @@ function showSelect(isVisible) {
   select.classList.toggle('hidden', !isVisible);
 }
 
-function showError(isError) {
-  error.classList.toggle('hidden', !isError);
-}
+// function showError(isError) {
+//   // error.classList.toggle('hidden', !isError);
+
+//   isError && toastError();
+// }
 
 function showInfo(isVisible) {
   info.classList.toggle('hidden', !isVisible);
